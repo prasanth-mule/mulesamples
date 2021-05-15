@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+	<file:config name="inbound_location" doc:name="File Config" doc:id="12d4d0d2-1dbe-4436-9a57-18205cad61cd" >
+		<file:connection workingDir="D:\inbox" />
+	</file:config>
+	<file:config name="outbound" doc:name="File Config" doc:id="89aa86af-088d-458a-a370-8b295b22bb20" >
+		<file:connection workingDir="D:\outbox" />
+	</file:config>
+	<flow name="fileprocessingFlow" doc:id="e8356216-b768-4c57-8a3a-f34925d98f9e" >
+		<file:listener doc:name="On New or Updated File" doc:id="88b7940c-383b-4fce-bc0c-e1804055b174" config-ref="inbound_location" directory="input" recursive="false" autoDelete="true">
+			<scheduling-strategy >
+				<fixed-frequency />
+			</scheduling-strategy>
+		</file:listener>
+		<file:write doc:name="Write" doc:id="46a31ef2-9139-4dc0-8dd2-f0a6b4bb46a3" config-ref="outbound" path="#[attributes.fileName]"/>
+	</flow>
+</mule>
