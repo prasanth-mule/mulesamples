@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="soapsubFlow" doc:id="fdfc8ccf-4b74-4a2c-aa55-0c8ebb9de5dd" >
+		<http:listener doc:name="Listener" doc:id="7b19df28-0683-4acd-b776-4322a6490846" config-ref="HTTP_Listener_config" path="subtraction"/>
+		<set-variable value="#[attributes.queryParams.number1]" doc:name="Set Variable" doc:id="3bbc9e4e-9bbe-400c-9bfd-195e9f8ef00b" variableName="p1"/>
+		<set-variable value="#[attributes.queryParams.number2]" doc:name="Set Variable" doc:id="0cb6b102-f559-4e79-8930-1af2b46e06a5" variableName="p2"/>
+		<ee:transform doc:name="Transform Message" doc:id="9b12ec38-866f-4443-a57c-45a05c769c98" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+ns ns0 http://tempuri.org/
+---
+{
+	ns0#Subtract: {
+		ns0#a: vars.p1 as Number,
+		ns0#b: vars.p2 as Number
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<wsc:consume operation="Subtract" doc:name="Consume" doc:id="77a177de-cf92-41e3-b8f5-e4c1166fc462" config-ref="Web_Service_Consumer_Config"/>
+		<ee:transform doc:name="Transform Message" doc:id="af1c7d3a-793d-479b-a944-b9b9985bc2dc" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

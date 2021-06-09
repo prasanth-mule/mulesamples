@@ -4,12 +4,11 @@
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
-	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="8b03f8b4-c3d1-44bb-8193-298a77b75d8f" basePath="mule" >
-		<http:listener-connection host="localhost" port="8082" />
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="a661d6f3-d48f-4502-bf84-a6050ab01405" basePath="mule" >
+		<http:listener-connection host="localhost" port="8081" />
 	</http:listener-config>
-	<flow name="helloFlow" doc:id="2558e0ba-77ef-4e46-8082-e377d2da9a42" >
-		<http:listener doc:name="Listener" doc:id="eb5ca06d-8bdf-468a-a361-881f932ea9f4" config-ref="HTTP_Listener_config" path="hello"/>
-		<logger level="INFO" doc:name="Logger" doc:id="ccb5c865-09ce-448d-981e-3b3cec4748a8" message="#[attributes.queryParams]"/>
-		<set-payload value="#['hello welcome to mule world training!']" doc:name="Set Payload" doc:id="534b9cc7-f7ef-418d-9e2f-6a5f531f5b2c" />
+	<flow name="helloFlow" doc:id="5d67936c-e8be-49c6-80dc-c5a680c3b276" >
+		<http:listener doc:name="Listener" doc:id="1f26f1c0-3afd-40c7-87d7-cf046a8be165" config-ref="HTTP_Listener_config" path="hello"/>
+		<set-payload value="#['hello welcome to mule world training']" doc:name="Set Payload" doc:id="ff0ece0f-4045-4df5-bb0a-9e275c49b5d3" />
 	</flow>
 </mule>

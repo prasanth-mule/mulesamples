@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="dbuserFlow" doc:id="4747e704-5246-418b-b447-4c6e7b8b2be3" >
+		<http:listener doc:name="Listener" doc:id="320f4e85-2c9c-4cd9-b343-88382efb784f" config-ref="HTTP_Listener_config" path="getuser"/>
+		<logger level="INFO" doc:name="Logger" doc:id="399fb63d-4e59-49f1-956c-2a9dfac9399f" message="#[attributes.queryParams]"/>
+		<db:select doc:name="Select" doc:id="31a0324f-07a3-477a-9b3e-d405a22ddf1f" config-ref="Database_Config">
+			<db:sql ><![CDATA[select * from employee where email=:emailid]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{'emailid' :attributes.queryParams.email}]]]></db:input-parameters>
+		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="551010c7-e977-4da2-9065-46c974706560" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
