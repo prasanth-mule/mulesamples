@@ -4,11 +4,11 @@
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
-	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="a661d6f3-d48f-4502-bf84-a6050ab01405" basePath="mule" >
-		<http:listener-connection host="localhost" port="8081" />
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="2d08804d-d966-41ee-8bcd-12076521da8e" basePath="mule" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
 	</http:listener-config>
-	<flow name="helloFlow" doc:id="5d67936c-e8be-49c6-80dc-c5a680c3b276" >
-		<http:listener doc:name="Listener" doc:id="1f26f1c0-3afd-40c7-87d7-cf046a8be165" config-ref="HTTP_Listener_config" path="hello"/>
-		<set-payload value="#['hello welcome to mule world training']" doc:name="Set Payload" doc:id="ff0ece0f-4045-4df5-bb0a-9e275c49b5d3" />
+	<flow name="helloFlow" doc:id="b06e77cd-beb2-4d95-a3ec-1c2f7b1590c4" >
+		<http:listener doc:name="Listener" doc:id="992c60ef-b531-4ec8-a6ce-550b6698a1ea" config-ref="HTTP_Listener_config" path="hello"/>
+		<set-payload value="#['hello welcome to mule world !']" doc:name="Set Payload" doc:id="205e4e81-01de-42e2-b44a-79f9da223331" />
 	</flow>
 </mule>

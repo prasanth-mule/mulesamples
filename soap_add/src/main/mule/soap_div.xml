@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
+	<flow name="soap_divFlow" doc:id="dea951fc-898f-4668-a32a-44a472fd5f8a" >
+		<http:listener doc:name="Listener" doc:id="66e8b481-b222-470b-8ba5-b75dd7dee316" config-ref="HTTP_Listener_config" path="div"/>
+		<set-variable value="#[attributes.queryParams.number1]" doc:name="Set Variable" doc:id="b0db3752-d6ba-4654-bc93-31c293b4d19f" variableName="p1"/>
+		<set-variable value="#[attributes.queryParams.number2]" doc:name="Set Variable" doc:id="317f925d-f6d9-4e03-8072-96a6b463cdda" variableName="p2"/>
+		<ee:transform doc:name="Transform Message" doc:id="8928a698-d38b-461f-8b0d-64cc41ee4bdb" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+ns ns0 http://tempuri.org/
+---
+{
+	ns0#Divide: {
+		ns0#intA: vars.p1 as Number,
+		ns0#intB: vars.p2 as Number
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<wsc:consume doc:name="Consume" doc:id="86165621-cd38-4b5a-a640-e885b49da339" config-ref="Web_Service_Consumer_Config" operation="Divide"/>
+		<ee:transform doc:name="Transform Message" doc:id="9082fa2c-eecb-46ed-ac64-3475dde68210" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

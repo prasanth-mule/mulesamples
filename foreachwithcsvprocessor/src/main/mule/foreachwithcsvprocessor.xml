@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<file:config name="File_Config" doc:name="File Config" doc:id="9871c50d-3c0d-458c-9ad8-622ff1d350ed" >
+		<file:connection workingDir="D:\inbox" />
+	</file:config>
+	<flow name="foreachwithcsvprocessorFlow" doc:id="87aca841-5b98-4d37-bd06-f857f7ac1f18" >
+		<file:listener doc:name="On New or Updated File" doc:id="83fa6136-058e-485a-a860-d98fcf63a0a6" config-ref="File_Config" directory="productsinfo" autoDelete="true">
+			<scheduling-strategy >
+				<fixed-frequency />
+			</scheduling-strategy>
+		</file:listener>
+		<logger level="INFO" doc:name="Logger" doc:id="1a178910-d1e8-41b1-9cbb-fa46f77851cc" message="file content is #[payload]"/>
+		<ee:transform doc:name="Transform Message" doc:id="808d7b1f-25f8-42df-bb7a-be3fdc9c41ce" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<foreach doc:name="For Each" doc:id="4f3da3b8-34da-43cb-8cf9-5ad68b6e0f05" >
+			<logger level="INFO" doc:name="Logger" doc:id="ac70684c-9ef0-45af-9f4a-a06314d7f0e4" message="inside for each scope #[payload]"/>
+		</foreach>
+	</flow>
+</mule>

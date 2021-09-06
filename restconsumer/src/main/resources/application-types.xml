@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="input-jp-data" format="json">
+      <types:shape format="weave" example="input/jp-response-data.json"><![CDATA[%dw 2.0
+
+type input_jp_data = Array<{|  id: Number {"typeId": "int"},   name: String,   username: String,   email: String,   address: {|    street: String,     suite: String,     city: String,     zipcode: String,     geo: {|      lat: String,       lng: String    |}  |},   phone: String,   website: String,   company: {|    name: String,     catchPhrase: String,     bs: String  |}|}> {"example": "[{\\\"id\\\":1,\\\"name\\\":\\\"Leanne Graham\\\",\\\"username\\\":\\\"Bret\\\",\\\"email\\\":\\\"Sincere@april.biz\\\",\\\"address\\\":{\\\"street\\\":\\\"Kulas Light\\\",\\\"suite\\\":\\\"Apt. 556\\\",\\\"city\\\":\\\"Gwenborough\\\",\\\"zipcode\\\":\\\"92998-3874\\\",\\\"geo\\\":{\\\"lat\\\":\\\"-37.3159\\\",\\\"lng\\\":\\\"81.1496\\\"}},\\\"phone\\\":\\\"1-770-736-8031 x56442\\\",\\\"website\\\":\\\"hildegard.org\\\",\\\"company\\\":{\\\"name\\\":\\\"Romaguera-Crona\\\",\\\"catchPhrase\\\":\\\"Multi-layered client-server neural-net\\\",\\\"bs\\\":\\\"harness real-time e-markets\\\"}}]"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="output1" format="json">
+      <types:shape format="weave" example="output/mule-expected-op.json"><![CDATA[%dw 2.0
+
+type output1 = Array<{|  userid: Number {"typeId": "int"},   name: String,   username: String,   email: String,   phone: String,   website: String|}> {"example": "[{\\\"userid\\\":1,\\\"name\\\":\\\"Leanne Graham\\\",\\\"username\\\":\\\"Bret\\\",\\\"email\\\":\\\"Sincere@april.biz\\\",\\\"phone\\\":\\\"1-770-736-8031 x56442\\\",\\\"website\\\":\\\"hildegard.org\\\"}]"}
+
+]]></types:shape>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#099d8f6c-655b-403d-9976-84a31c2dd98c">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="input-jp-data"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="output1"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>

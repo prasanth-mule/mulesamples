@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+	<file:config name="pdf_files" doc:name="File Config" doc:id="c9b777a7-44d0-45c3-b09f-b5674903cbe8" >
+		<file:connection workingDir="D:\outbox\pdffiles" />
+	</file:config>
+	<file:config name="text_files" doc:name="File Config" doc:id="f0cfc644-0550-454f-b9d3-9c7de05fa810" >
+		<file:connection workingDir="D:\outbox\textfile" />
+	</file:config>
+	<file:config name="others" doc:name="File Config" doc:id="78894930-1102-44c1-94d1-050b959db3e0" >
+		<file:connection workingDir="D:\outbox\others" />
+	</file:config>
+	<flow name="file_choiceFlow" doc:id="771e79f3-b743-46c4-a621-5dd24f62b601" >
+		<file:listener doc:name="On New or Updated File" doc:id="9cee72b1-55c6-4eb3-a71f-a1127265168b" config-ref="input_location" directory="choice" recursive="false" autoDelete="true">
+			<scheduling-strategy >
+				<fixed-frequency />
+			</scheduling-strategy>
+		</file:listener>
+		<choice doc:name="Choice" doc:id="8e50d4b5-1e4d-4b18-87cb-6314fdeba897" >
+			<when expression="#[endsWith(attributes.fileName,'pdf')]">
+				<file:write doc:name="pdf_files" doc:id="5ee23bcc-1543-439b-95d6-bdd5bfdd7f55" config-ref="pdf_files" path="#[attributes.fileName]"/>
+			</when>
+			<when expression="#[endsWith(attributes.fileName,'text')]">
+				<file:write doc:name="text_files" doc:id="70b6a7b5-c0de-4a4e-b62a-c90b523a6c1e" config-ref="text_files" path="#[attributes.fileName]"/>
+			</when>
+			<otherwise >
+				<file:write doc:name="others" doc:id="efd57cdf-cc1b-4fe7-8980-02261d7645d6" config-ref="others" path="#[attributes.fileName]"/>
+			</otherwise>
+		</choice>
+	</flow>
+</mule>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="13bb44cc-2bea-4334-9303-8abece0936d7" basePath="rest/api" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<http:request-config name="json-place-holder" doc:name="HTTP Request configuration" doc:id="1c48a088-6705-4bd8-86c3-6139a79d8a7b" >
+		<http:request-connection host="jsonplaceholder.typicode.com" protocol="HTTPS"/>
+	</http:request-config>
+	<flow name="restconsumerFlow" doc:id="43f423f2-224f-4333-bd2a-65ff936ad08f" >
+		<http:listener doc:name="Listener" doc:id="6b9fc4b5-1909-4a0c-bb84-58592b5a0b63" config-ref="HTTP_Listener_config" path="usersdata"/>
+		<http:request method="GET" doc:name="Request" doc:id="721cd790-665b-4472-b4d7-a70593b69dd2" config-ref="json-place-holder" path="users"/>
+		<ee:transform doc:name="Transform Message" doc:id="099d8f6c-655b-403d-9976-84a31c2dd98c" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload map ( payload01 , indexOfPayload01 ) -> {
+	userid: payload01.id,
+	name: payload01.name,
+	username: payload01.username,
+	email: payload01.email,
+	phone: payload01.phone,
+	website: payload01.website
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
