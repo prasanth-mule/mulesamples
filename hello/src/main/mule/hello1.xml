@@ -5,11 +5,11 @@
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-	<flow name="hello1Flow" doc:id="86cb9f5e-fedf-44e2-9dec-d1471b317ebe" >
-		<http:listener doc:name="Listener" doc:id="bc027d61-ad3f-446c-b0a5-c4b0dc4de166" config-ref="HTTP_Listener_config" path="hello1"/>
-		<set-payload value="#[attributes.queryParams]" doc:name="Set Payload" doc:id="a42a52a0-f9f0-4398-9ab3-d640e24b2f52" />
-		<logger level="INFO" doc:name="Logger" doc:id="26444f17-62d0-4f74-b011-70603e19aeae" message="#[attributes.queryParams]"/>
-		<ee:transform doc:name="Transform Message" doc:id="886b5f2c-1663-4d9b-af79-653ceffbdf8b" >
+	<flow name="hello1Flow" doc:id="2c7b032e-eb25-46c4-85e1-eff42713b1c5" >
+		<http:listener doc:name="Listener" doc:id="95d8a5e2-69f4-42f3-9c01-b1b85e6a64ae" config-ref="HTTP_Listener_config" path="hello1"/>
+		<logger level="INFO" doc:name="Logger" doc:id="8fe4c922-6c82-4cd3-844c-e208e01d0e2f" message="#[attributes.queryParams]"/>
+		<set-payload value="#[attributes.queryParams]" doc:name="Set Payload" doc:id="2067b7c8-2056-4ee7-8496-b594b8aa37e4" />
+		<ee:transform doc:name="Transform Message" doc:id="515873a6-a0c3-412d-b22e-7dddfe35d70e" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json

@@ -6,20 +6,18 @@
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-	<db:config name="Database_Config1" doc:name="Database Config" doc:id="4d0b5abc-ff04-4a9b-b66f-e324d677dc27" >
-		<db:my-sql-connection host="localhost" port="3306" user="root" password="root" database="batch45" />
-	</db:config>
-	<flow name="db_demoFlow" doc:id="b74d45ff-ee60-4989-9e0b-6884adbd3172" >
-		<http:listener doc:name="Listener" doc:id="5d4c8c35-d1cb-4ff0-ba25-d95657827c3b" config-ref="HTTP_Listener_config" path="demo"/>
-		<db:select doc:name="Select" doc:id="8b7606f7-9fbe-4359-b3a5-fb069d44898a" config-ref="Database_Config1">
-			<db:sql ><![CDATA[select * from pc]]></db:sql>
-		</db:select>
-		<ee:transform doc:name="Transform Message" doc:id="770d5852-e6b5-4a46-a454-3bbbea8d44f5" >
+	<flow name="db_demoFlow" doc:id="977b2d63-b10b-4444-b449-744c25fce567" >
+		<http:listener doc:name="Listener" doc:id="3f719591-c138-4eaa-9630-b75e73f8ae2a" config-ref="HTTP_Listener_config" path="demo"/>
+		<db:insert doc:name="Insert" doc:id="d9fd157b-a006-4ab0-8025-2c18259a3843" config-ref="Database_Config">
+			<db:sql ><![CDATA[insert into pc (fname,lname,phone,email,course) values ('r','ra','123','ra@','mu')]]></db:sql>
+		</db:insert>
+		<ee:transform doc:name="Transform Message" doc:id="1fb4fd05-ea45-4206-b91a-ff98b3f2061b" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
-output application/json
+output application/java
 ---
-payload]]></ee:set-payload>
+{
+}]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
 	</flow>

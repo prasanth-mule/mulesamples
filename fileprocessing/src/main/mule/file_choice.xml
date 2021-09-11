@@ -4,30 +4,30 @@
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
-	<file:config name="pdf_files" doc:name="File Config" doc:id="c9b777a7-44d0-45c3-b09f-b5674903cbe8" >
-		<file:connection workingDir="D:\outbox\pdffiles" />
-	</file:config>
-	<file:config name="text_files" doc:name="File Config" doc:id="f0cfc644-0550-454f-b9d3-9c7de05fa810" >
+	<file:config name="text_files" doc:name="File Config" doc:id="3fc0515f-46ca-4b1c-afe9-9c8bd7f91492" >
 		<file:connection workingDir="D:\outbox\textfile" />
 	</file:config>
-	<file:config name="others" doc:name="File Config" doc:id="78894930-1102-44c1-94d1-050b959db3e0" >
+	<file:config name="other_files" doc:name="File Config" doc:id="3eeaa27d-979e-4ed7-8f5a-2422ffb426cc" >
 		<file:connection workingDir="D:\outbox\others" />
 	</file:config>
-	<flow name="file_choiceFlow" doc:id="771e79f3-b743-46c4-a621-5dd24f62b601" >
-		<file:listener doc:name="On New or Updated File" doc:id="9cee72b1-55c6-4eb3-a71f-a1127265168b" config-ref="input_location" directory="choice" recursive="false" autoDelete="true">
+	<file:config name="pdf_files" doc:name="File Config" doc:id="c1b1e5ce-8338-403d-b9f6-99c4fbfe3398" >
+		<file:connection workingDir="D:\outbox\pdffiles" />
+	</file:config>
+	<flow name="file_choiceFlow" doc:id="eb3e4015-8d46-4f5a-bbc7-f96c632605c0" >
+		<file:listener doc:name="On New or Updated File" doc:id="d9736e9c-de36-434d-98c1-df330ebf2662" directory="choice" recursive="false" autoDelete="true" config-ref="input_location">
 			<scheduling-strategy >
 				<fixed-frequency />
 			</scheduling-strategy>
 		</file:listener>
-		<choice doc:name="Choice" doc:id="8e50d4b5-1e4d-4b18-87cb-6314fdeba897" >
+		<choice doc:name="Choice" doc:id="2dbd0b00-2639-4ad7-860a-1eaa6059a0c8" >
 			<when expression="#[endsWith(attributes.fileName,'pdf')]">
-				<file:write doc:name="pdf_files" doc:id="5ee23bcc-1543-439b-95d6-bdd5bfdd7f55" config-ref="pdf_files" path="#[attributes.fileName]"/>
+				<file:write doc:name="pdf_files" doc:id="ff6f60d6-cbda-45cc-a058-d5b8daad5db4" path="#[attributes.fileName]" config-ref="pdf_files"/>
 			</when>
-			<when expression="#[endsWith(attributes.fileName,'text')]">
-				<file:write doc:name="text_files" doc:id="70b6a7b5-c0de-4a4e-b62a-c90b523a6c1e" config-ref="text_files" path="#[attributes.fileName]"/>
+			<when expression="#[endsWith(attributes.fileName,'textfile')]">
+				<file:write doc:name="text_files" doc:id="d12359ea-742a-4da7-bbe7-3ff8fb7ee8f5" config-ref="text_files" path="#[attributes.fileName]"/>
 			</when>
 			<otherwise >
-				<file:write doc:name="others" doc:id="efd57cdf-cc1b-4fe7-8980-02261d7645d6" config-ref="others" path="#[attributes.fileName]"/>
+				<file:write doc:name="other" doc:id="ec914ed9-f052-40c2-8f4b-0b27fd304c65" config-ref="other_files" path="#[attributes.fileName]"/>
 			</otherwise>
 		</choice>
 	</flow>
