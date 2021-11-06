@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+	<file:config name="pdf" doc:name="File Config" doc:id="80dad5ca-9acf-4fdf-b7bf-89bd889d62d2" >
+		<file:connection workingDir="D:\outbox\pdffiles" />
+	</file:config>
+	<file:config name="text" doc:name="File Config" doc:id="7b6ce52b-7d6c-4a22-9490-b10ba43a003d" >
+		<file:connection workingDir="D:\outbox\textfile" />
+	</file:config>
+	<file:config name="others" doc:name="File Config" doc:id="d2c7ee72-6edf-442d-bae8-1b61d35a0422" >
+		<file:connection workingDir="D:\outbox\others" />
+	</file:config>
+	<flow name="file_choiceFlow" doc:id="6b2d15d7-87c1-4bab-acb3-f8fbe40693a7" >
+		<file:listener doc:name="On New or Updated File" doc:id="4287703a-a195-4947-8185-3ca93e748e83" config-ref="inbound_location" directory="choice" recursive="false" autoDelete="true">
+			<scheduling-strategy >
+				<fixed-frequency />
+			</scheduling-strategy>
+		</file:listener>
+		<choice doc:name="Choice" doc:id="8510c48f-3833-4acf-88b0-75438311252c" >
+			<when expression="#[endsWith(attributes.fileName,'pdf')]">
+				<file:write doc:name="pdf_files" doc:id="efe275ad-3717-4090-80fe-af71f61806fe" config-ref="pdf" path="#[attributes.fileName]"/>
+			</when>
+			<when expression="#[endsWith(attributes.fileName,'text')]">
+				<file:write doc:name="text_files" doc:id="e9d36484-01b8-4f08-bad2-20ddcd5bb922" config-ref="text" path="#[attributes.fileName]"/>
+			</when>
+			<otherwise >
+				<file:write doc:name="others" doc:id="b4715072-4cc1-4c28-ad58-2c226bea6e7a" config-ref="others" path="#[attributes.fileName]"/>
+			</otherwise>
+		</choice>
+	</flow>
+</mule>
