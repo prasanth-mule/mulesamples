@@ -1,38 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
-	xmlns:file="http://www.mulesoft.org/schema/mule/file"
-	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
-http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
-http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
-	<file:config name="inbound_location" doc:name="File Config" doc:id="9e604016-9c05-4ed9-a211-a01f77b05a76" >
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<file:config name="inbound_location" doc:name="File Config" doc:id="9f600530-96ca-4812-8089-d44cace6e453" >
 		<file:connection workingDir="D:\inbox" />
 	</file:config>
-	<db:config name="Database_Config" doc:name="Database Config" doc:id="3467a13d-af79-4693-abbf-987eb58a43dd" >
-		<db:my-sql-connection host="localhost" port="3306" user="root" password="root" database="mule" />
-	</db:config>
-	<flow name="scopeFlow" doc:id="4d0a8545-e29c-4988-a3d0-1e0f2b773bf7" >
-		<file:listener doc:name="On New or Updated File" doc:id="e7edc693-3709-4668-afcf-b8bcc2eee2cf" config-ref="inbound_location" directory="productsinfo" recursive="false" autoDelete="true">
+	<flow name="scopeFlow" doc:id="9896179c-e15f-4580-a7ee-ed3db7562058" >
+		<file:listener doc:name="On New or Updated File" doc:id="30da6f34-d249-4063-be67-980e73f55ca1" config-ref="inbound_location" directory="productsinfo" recursive="false" autoDelete="true">
 			<scheduling-strategy >
 				<fixed-frequency />
 			</scheduling-strategy>
 		</file:listener>
-		<logger level="INFO" doc:name="Logger" doc:id="6443db75-bfdd-4fc5-ab32-73d14abc5fac" message="the product content is  #[payload]"/>
-		<foreach doc:name="For Each" doc:id="cbbd9ad7-2bca-4746-9c7b-a3629afd8175" >
-			<ee:transform doc:name="Transform Message" doc:id="2cc16f87-2953-4808-a60f-814834efe62d">
-			<ee:message>
-				<ee:set-payload><![CDATA[%dw 2.0
+		<logger level="INFO" doc:name="Logger" doc:id="9e20d9bf-4821-483f-9ccc-39fbf7435e4f" message="'the product is' #[payload]"/>
+		<ee:transform doc:name="Transform Message" doc:id="ff23cbdb-fca6-464f-b522-de5ac4695ed6" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
 output application/java
 ---
 payload]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-			<logger level="INFO" doc:name="Logger" doc:id="50383d63-a0c2-4026-871d-a933fdcf8b58" message="inside for each scope is #[payload]"/>
-			<db:insert doc:name="Insert" doc:id="2846c0b6-3f02-4af2-b8fc-726e76dd1368" config-ref="Database_Config">
-				<db:sql ><![CDATA[insert into product (pid,name,price,vendor) values ('1','pra','123','mi')]]></db:sql>
-			</db:insert>
-			<logger level="INFO" doc:name="Logger" doc:id="04043aa8-a29b-4a66-8a32-6782f836aefd" message="inserted successufuly #[payload]"/>
+		<foreach doc:name="For Each" doc:id="38568454-dbf0-4f8a-9391-ba845d18436d" >
+			<logger level="INFO" doc:name="Logger" doc:id="bd82c5d6-8fb1-40b0-85bb-e7ad1a2649fd" message="inside for each scope #[payload]"/>
 		</foreach>
 	</flow>
 </mule>

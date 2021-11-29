@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+	<file:config name="pdf_files" doc:name="File Config" doc:id="049b91e0-0061-4c03-b201-1e723d986d9c" >
+		<file:connection workingDir="D:\outbox\pdffiles" />
+	</file:config>
+	<file:config name="text_files" doc:name="File Config" doc:id="3cedb7fb-d437-4869-a4b3-549866c82430" >
+		<file:connection workingDir="D:\outbox\textfile" />
+	</file:config>
+	<file:config name="others" doc:name="File Config" doc:id="4a5d2db9-bbfc-4ec0-a728-f427004704bc" >
+		<file:connection workingDir="D:\outbox\others" />
+	</file:config>
+	<flow name="fileprocessing_choiceFlow" doc:id="9d7a3fbf-0e28-448d-9b81-0409235f8162" >
+		<file:listener doc:name="On New or Updated File" doc:id="37e8593b-4970-4204-b3e6-5577aaef3787" config-ref="inbound_location" directory="choice" recursive="false" autoDelete="true">
+			<scheduling-strategy >
+				<fixed-frequency />
+			</scheduling-strategy>
+		</file:listener>
+		<choice doc:name="Choice" doc:id="cfbe3039-8367-44d9-a19b-8c3195d9f062" >
+			<when expression="#[endsWith(attributes.fileName,'pdf')]">
+				<file:write doc:name="pdf_files" doc:id="4f7bb9ce-37a6-4265-b41e-123776319e7c" config-ref="pdf_files" path="#[attributes.fileName]"/>
+			</when>
+			<when expression="#[endsWith(attributes.fileName,'text')]">
+				<file:write doc:name="text_files" doc:id="4c66d835-651d-4fda-b6f0-870598c1152d" config-ref="text_files" path="#[attributes.fileName]"/>
+			</when>
+			<otherwise >
+				<file:write doc:name="others" doc:id="a8f09685-22bd-4139-ba82-03c1c9383d0a" config-ref="others" path="#[attributes.fileName]"/>
+			</otherwise>
+		</choice>
+	</flow>
+</mule>

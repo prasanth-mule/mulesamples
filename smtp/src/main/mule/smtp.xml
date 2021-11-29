@@ -5,24 +5,25 @@
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/email http://www.mulesoft.org/schema/mule/email/current/mule-email.xsd">
-	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="1595e38f-18a9-4b9e-b3cd-5bcb1218f9c7" basePath="smtp" >
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="4f2637fe-900a-4efd-b9df-19c37cf06faf" basePath="smtp" >
 		<http:listener-connection host="0.0.0.0" port="8081" />
 	</http:listener-config>
-	<email:smtp-config name="Email_SMTP" doc:name="Email SMTP" doc:id="ac420d0b-de1d-4397-8972-b21b06114756" >
-		<email:smtp-connection host=" mail.smtpeter.com" user="prasanthnaidu9996@gmail.com" password="7795439996pc" >
+	<email:smtp-config name="Email_SMTP" doc:name="Email SMTP" doc:id="c8ee987b-5837-4adb-a2b2-02184113cb0e" >
+		<email:smtp-connection host="smtp.gmail.com" port="465" user="pantraprasanthnaidu@gmail.com" password="7795439996pc" >
 			<email:properties >
 				<email:property key="smtp.STARTTLS.enable" value="true" />
+				<email:property key="smtp.SSL.enable" value="true" />
 			</email:properties>
 		</email:smtp-connection>
 	</email:smtp-config>
-	<flow name="smtpFlow" doc:id="da989219-dbe2-4bef-920b-97501fc9d06c" >
-		<http:listener doc:name="Listener" doc:id="1206fe81-863c-4a07-a5ef-db2459d687f4" config-ref="HTTP_Listener_config" path="send"/>
-		<logger level="INFO" doc:name="Logger" doc:id="951f75b2-cec7-494f-8762-ced59ba95f45" message="'need to send mail through mule'"/>
-		<email:send doc:name="Send" doc:id="aa9b2f2f-6273-4339-bab4-da8421b5a30e" config-ref="Email_SMTP" fromAddress="prasanthnaidu9996@gmail.com" subject="sample" toAddresses="pcprasanthmule@gmail.com">
+	<flow name="smtpFlow" doc:id="3bff3573-1aaa-479a-816f-881175647a6a" >
+		<http:listener doc:name="Listener" doc:id="c1386222-4520-4cb2-a8b6-b7ea3ed359e2" config-ref="HTTP_Listener_config" path="send"/>
+		<logger level="INFO" doc:name="Logger" doc:id="99b433e0-43c8-49da-a232-87340472cdc9" message="'need to email'"/>
+		<email:send doc:name="Send" doc:id="b050342b-8b49-4a1c-ac4f-9476b7cc7a9a" config-ref="Email_SMTP" fromAddress="pantraprasanthnaidu@gmail.com" subject="sample email" toAddresses="prasanthnaidu9996@gmail.com">
 			<email:body >
-				<email:content ><![CDATA[#[mule training maile]]]></email:content>
+				<email:content ><![CDATA[#[hello]]]></email:content>
 			</email:body>
 		</email:send>
-		<logger level="INFO" doc:name="Logger" doc:id="5efbac8b-4abc-4cfc-9ac3-c968e6199bfd" message="'mail send successufuly'"/>
+		<logger level="INFO" doc:name="Logger" doc:id="e4c410dc-aaaa-40a3-8ad3-1756400f9aa2" message="'email sent successufuly'"/>
 	</flow>
 </mule>

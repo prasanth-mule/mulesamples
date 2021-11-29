@@ -6,16 +6,15 @@
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-	<db:config name="Database_Config1" doc:name="Database Config" doc:id="61f5634e-6f20-4c43-a9ab-6ea8402620f7" >
+	<db:config name="Database_Config1" doc:name="Database Config" doc:id="f2d4ffdf-de30-489a-83b0-794e5eb2e4ce" >
 		<db:my-sql-connection host="localhost" port="3306" user="root" password="root" database="mule" />
 	</db:config>
-	<flow name="db_demoFlow" doc:id="7ed2a27f-2a76-4680-a827-4a9a7cfedb5f" >
-		<http:listener doc:name="Listener" doc:id="2c502803-b6ac-4835-97ca-9d517a069829" config-ref="HTTP_Listener_config" path="insert"/>
-		<logger level="INFO" doc:name="Logger" doc:id="86d023cc-6787-484f-9a69-9059881bd653" message="#[attributes.queryParams]"/>
-		<db:insert doc:name="Insert" doc:id="f806bf45-fb78-42f3-95f6-d014521ead12" config-ref="Database_Config1">
-			<db:sql ><![CDATA[insert into users (idusers,fname,lname,phone,course,email) values ('9','pr','pras','123','mule','pra@')]]></db:sql>
+	<flow name="db_sendFlow" doc:id="9489c217-5dc3-4987-a97d-a4f6df713224" >
+		<http:listener doc:name="Listener" doc:id="5c1a5632-c2c5-4fee-89a2-467bba443279" config-ref="HTTP_Listener_config" path="insert"/>
+		<db:insert doc:name="Insert" doc:id="d6b8f28e-2628-45fc-84ae-1216cde3b402" config-ref="Database_Config1">
+			<db:sql ><![CDATA[insert into users (fname,lname,idusers,phone,course,email) values ('s','suv','11','12134','mule','suv@')]]></db:sql>
 		</db:insert>
-		<ee:transform doc:name="Transform Message" doc:id="bde9eec7-8cd9-45ea-ba1e-53a3b47ab55a" >
+		<ee:transform doc:name="Transform Message" doc:id="ac33b38d-eb9e-41b6-970e-e3c8cc651435" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json

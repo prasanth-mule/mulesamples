@@ -6,11 +6,11 @@
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-	<flow name="soap_subFlow" doc:id="64129bb6-7ef5-487b-b13b-716dc71044d2" >
-		<http:listener doc:name="Listener" doc:id="4b10517e-5cb8-43ca-85ce-ae513f6aac60" config-ref="HTTP_Listener_config" path="sub"/>
-		<set-variable value="#[attributes.queryParams.number1]" doc:name="Set Variable" doc:id="0d3060ef-fbf9-4e7d-8c9d-a9d8f26de8af" variableName="p1"/>
-		<set-variable value="#[attributes.queryParams.number2]" doc:name="Set Variable" doc:id="519a8c92-bd83-4633-87c6-77d902f3b4d3" variableName="p2"/>
-		<ee:transform doc:name="Transform Message" doc:id="a069c3b3-b352-44e7-81a9-e15aef574a28" >
+	<flow name="soap_subFlow" doc:id="0590afae-4a6c-4833-ac3a-09e7bbe3b30a" >
+		<http:listener doc:name="Listener" doc:id="e09a5325-f591-4918-a702-ddf1463b62e1" config-ref="HTTP_Listener_config" path="sub"/>
+		<set-variable value="#[attributes.queryParams.number1]" doc:name="Set Variable" doc:id="52676e4e-ade0-46f7-a358-9d4b86dee587" variableName="p1"/>
+		<set-variable value="#[attributes.queryParams.number2]" doc:name="Set Variable" doc:id="807e4e27-e2ba-488a-8f1d-88c6b97205b1" variableName="p2"/>
+		<ee:transform doc:name="Transform Message" doc:id="321bb485-8b2b-4d28-bbdf-eb2450804a29" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/xml
@@ -24,8 +24,8 @@ ns ns0 http://tempuri.org/
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<wsc:consume operation="Subtract" doc:name="Consume" doc:id="5dd55f32-7f84-4294-a4dd-14550224e283" config-ref="Web_Service_Consumer_Config"/>
-		<ee:transform doc:name="Transform Message" doc:id="0d422782-f9c5-4ec8-9a94-9b6205456e0e" >
+		<wsc:consume operation="Subtract" doc:name="Consume" doc:id="5fb674c8-98d7-45f8-9b2d-7a85e6352afb" config-ref="Web_Service_Consumer_Config"/>
+		<ee:transform doc:name="Transform Message" doc:id="150189bb-ba83-483c-967a-76b26c1d4a4d" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json

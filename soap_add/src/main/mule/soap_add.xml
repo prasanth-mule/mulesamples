@@ -6,19 +6,17 @@
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="ed9e4b66-61a7-4ae0-8184-ca972a9bdad8" basePath="soap" >
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="e12a219a-6b1a-45e2-9c89-e6e0f85272a1" basePath="soap" >
 		<http:listener-connection host="0.0.0.0" port="8081" />
 	</http:listener-config>
-	<wsc:config name="Web_Service_Consumer_Config" doc:name="Web Service Consumer Config" doc:id="9e17a4a2-9fab-47cd-b5a5-394d8625a4f1" >
-		<wsc:connection wsdlLocation="http://www.dneonline.com/calculator.asmx?WSDL" service="Calculator" port="CalculatorSoap" address="http://www.dneonline.com/calculator.asmx" >
-			<wsc:web-service-security actor="http://schemas.xmlsoap.org/soap/actor/next" />
-		</wsc:connection>
+	<wsc:config name="Web_Service_Consumer_Config" doc:name="Web Service Consumer Config" doc:id="a73cb2d3-e11c-4b61-acdc-6dc29a519d51" >
+		<wsc:connection wsdlLocation="http://www.dneonline.com/calculator.asmx?WSDL" service="Calculator" port="CalculatorSoap" address="http://www.dneonline.com/calculator.asmx" />
 	</wsc:config>
-	<flow name="soap_addFlow" doc:id="202a5290-8fd7-4cb0-b9ed-e2b2cd33518c" >
-		<http:listener doc:name="Listener" doc:id="6468c2a3-5510-4cbd-a00e-e4e70faa5333" config-ref="HTTP_Listener_config" path="add"/>
-		<set-variable value="#[attributes.queryParams.number1]" doc:name="Set Variable" doc:id="266cd719-77c4-4b4d-811e-991e06a1579f" variableName="p1"/>
-		<set-variable value="#[attributes.queryParams.number2]" doc:name="Set Variable" doc:id="7d23b5f4-d69b-4c62-acf0-7da7a30aa192" variableName="p2"/>
-		<ee:transform doc:name="Transform Message" doc:id="b34e81cb-0509-477f-b16a-596badfe73e6" >
+	<flow name="soap_addFlow" doc:id="5d5c3ce4-d655-4d71-830b-7fa4ee419ce9" >
+		<http:listener doc:name="Listener" doc:id="c9ef2deb-e7a2-43ce-9ee4-c254990086a3" config-ref="HTTP_Listener_config" path="add"/>
+		<set-variable value="#[attributes.queryParams.number1]" doc:name="Set Variable" doc:id="15ca921b-03f5-420d-b08c-a577f4bd09c7" variableName="p1"/>
+		<set-variable value="#[attributes.queryParams.number2]" doc:name="Set Variable" doc:id="ddab2d73-aaf2-4ef4-bac5-3859dd0e89ee" variableName="p2"/>
+		<ee:transform doc:name="Transform Message" doc:id="1fb9ecd9-b559-42e6-ab98-112707d08c14" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/xml
@@ -32,8 +30,8 @@ ns ns0 http://tempuri.org/
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<wsc:consume operation="Add" doc:name="Consume" doc:id="91dcade3-7b94-4db7-a4ce-13f7a8a3895c" config-ref="Web_Service_Consumer_Config"/>
-		<ee:transform doc:name="Transform Message" doc:id="c43c4786-2c3d-4bca-9e0e-50d53f255695" >
+		<wsc:consume operation="Add" doc:name="Consume" doc:id="48f8647a-bbe3-4c51-9b65-4d0bdfee2b27" config-ref="Web_Service_Consumer_Config"/>
+		<ee:transform doc:name="Transform Message" doc:id="388cb4df-2536-4d9e-933d-4c4a1ceee93e" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json

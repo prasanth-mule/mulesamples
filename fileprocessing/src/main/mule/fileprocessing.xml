@@ -4,19 +4,18 @@
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
-	<file:config name="inbound_location" doc:name="File Config" doc:id="a712f873-b609-4393-b4a5-30e9bce9de12" >
+	<file:config name="inbound_location" doc:name="File Config" doc:id="da695ed4-2ad4-4161-b103-a0a413a16ff1" >
 		<file:connection workingDir="D:\inbox" />
 	</file:config>
-	<file:config name="outbound_location" doc:name="File Config" doc:id="4bcd032d-19ff-4a91-a694-6c135ca4e6c6" >
+	<file:config name="outbound_location" doc:name="File Config" doc:id="7e4148df-bbf2-4e86-8152-3c81f8d99cc3" >
 		<file:connection workingDir="D:\outbox" />
 	</file:config>
-	<flow name="fileprocessingFlow" doc:id="c2cfb919-a81e-47f6-a490-545add147efb" >
-		<file:listener doc:name="On New or Updated File" doc:id="55e680b4-a835-4c6b-954f-d49862efd5a9" config-ref="inbound_location" directory="input" recursive="false" autoDelete="true">
+	<flow name="fileprocessingFlow" doc:id="5483c2ac-fa46-446a-ae0f-0f7b6b468b36" >
+		<file:listener doc:name="On New or Updated File" doc:id="315b416c-9c14-4334-bec9-4916b13e66e2" config-ref="inbound_location" directory="input" recursive="false" autoDelete="true">
 			<scheduling-strategy >
 				<fixed-frequency />
 			</scheduling-strategy>
 		</file:listener>
-		<logger level="INFO" doc:name="Logger" doc:id="9ff92002-2c05-413b-a551-2250eddfbd94" message="#[attributes.fileName]"/>
-		<file:write doc:name="Write" doc:id="bfff57c7-2cb2-4d64-a2e8-4aa8af4b1809" config-ref="outbound_location" path="#[attributes.fileName]"/>
+		<file:write doc:name="Write" doc:id="f850c0ff-fe8e-451e-a262-c27581668ecb" config-ref="outbound_location" path="#[attributes.fileName]"/>
 	</flow>
 </mule>
